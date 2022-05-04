@@ -18,7 +18,10 @@ const months = getMonthList();
 
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
-  birthDay: yup.number().required('Day is required'),
+  birthDay: yup.number()
+    .min(0, 'Day should be between 0 and 31.')
+    .max(31, 'Day should be between 0 and 31.')
+    .required('Day is required'),
   birthMonth: yup.number().required('Month is required'),
   birthYear: yup.number().max(moment().year()),
 });
@@ -97,6 +100,7 @@ const AddForm: React.FC<{ open: boolean; handleClose: () => void }> = ({
             InputLabelProps={{
               shrink: true,
             }}
+            inputProps={{ inputMode: 'numeric', min: 0, max: 31 }}
             value={values.birthDay}
             onChange={handleChange}
             onBlur={handleBlur}
